@@ -5,7 +5,6 @@ class TransactionPage extends StatefulWidget {
   final String gameName;
   final String nominal;
   final String price;
-  final;
 
   const TransactionPage({
     super.key,
