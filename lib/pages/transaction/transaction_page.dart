@@ -49,7 +49,6 @@ class _TransactionPageState extends State<TransactionPage> {
 
     setState(() => isLoading = true);
 
-    // simulasi proses pembayaran
     await Future.delayed(const Duration(seconds: 2));
 
     if (!mounted) return;

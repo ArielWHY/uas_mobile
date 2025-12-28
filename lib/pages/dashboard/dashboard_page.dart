@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../free_fire/free_fire_page.dart';
-import '../mobile_legends/ml_page.dart';
+import '../mobile_legends/mobile_legends_page.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});

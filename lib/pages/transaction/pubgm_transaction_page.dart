@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../success/ml_success_page.dart';
+import '../success/pubgm_success_page.dart';
 
-class MLTransactionPage extends StatefulWidget {
+class PubGMTransactionPage extends StatefulWidget {
   final String nominal;
   final String price;
 
-  const MLTransactionPage({
+  const PubGMTransactionPage({
     super.key,
     required this.nominal,
     required this.price,
   });
 
   @override
-  State<MLTransactionPage> createState() => _MLTransactionPageState();
+  State<PubGMTransactionPage> createState() => _PubGMTransactionPageState();
 }
 
-class _MLTransactionPageState extends State<MLTransactionPage> {
+class _PubGMTransactionPageState extends State<PubGMTransactionPage> {
   final idController = TextEditingController();
-  final zoneController = TextEditingController();
   final emailController = TextEditingController();
 
   String paymentMethod = 'OVO';
@@ -26,14 +25,18 @@ class _MLTransactionPageState extends State<MLTransactionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Transaksi ML')),
+      appBar: AppBar(title: const Text('Transaksi PUBG Mobile')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${widget.nominal} • ${widget.price}',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'PUBG Mobile',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 4),
+            Text('${widget.nominal} • ${widget.price}'),
 
             const SizedBox(height: 16),
 
@@ -41,30 +44,17 @@ class _MLTransactionPageState extends State<MLTransactionPage> {
               controller: idController,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
-                labelText: 'ID Player',
+                labelText: 'Player ID',
                 border: OutlineInputBorder(),
               ),
             ),
 
             const SizedBox(height: 12),
 
-            TextField(
-              controller: zoneController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(5),
-              ],
-              decoration: const InputDecoration(
-                labelText: 'Zone ID (Max 5 digit)',
-                border: OutlineInputBorder(),
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
+            /// EMAIL (OPSIONAL)
             TextField(
               controller: emailController,
+              keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 labelText: 'Email (Opsional)',
                 border: OutlineInputBorder(),
@@ -84,7 +74,9 @@ class _MLTransactionPageState extends State<MLTransactionPage> {
                 DropdownMenuItem(value: 'DANA', child: Text('DANA')),
                 DropdownMenuItem(value: 'Pulsa', child: Text('Pulsa')),
               ],
-              onChanged: (value) => setState(() => paymentMethod = value!),
+              onChanged: (value) {
+                setState(() => paymentMethod = value!);
+              },
             ),
 
             const Spacer(),
@@ -97,10 +89,9 @@ class _MLTransactionPageState extends State<MLTransactionPage> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => MLSuccessPage(
-                        game: 'Mobile Legends',
-                        playerId:
-                            '${idController.text} (${zoneController.text})',
+                      builder: (_) => PubGMSuccessPage(
+                        game: 'PUBG Mobile',
+                        playerId: idController.text,
                         nominal: widget.nominal,
                         payment: paymentMethod,
                         email: emailController.text,

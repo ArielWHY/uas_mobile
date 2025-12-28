@@ -1,14 +1,20 @@
 import '../core/supabase_client.dart';
 
 class AuthService {
-  final _client = SupabaseClientManager.client;
-
   Future<void> signInWithEmail(String email, String password) async {
-    await _client.auth.signInWithPassword(
-      email: email,
-      password: password,
-    );
+    final res = await SupabaseClientManager.client.auth
+        .signInWithPassword(email: email, password: password);
+
+    if (res.user == null) {
+      throw Exception('Email atau password salah');
+    }
   }
 
-  bool get isLoggedIn => _client.auth.currentSession != null;
+  String? get currentUserEmail {
+    return SupabaseClientManager.client.auth.currentUser?.email;
+  }
+
+  Future<void> signOut() async {
+    await SupabaseClientManager.client.auth.signOut();
+  }
 }

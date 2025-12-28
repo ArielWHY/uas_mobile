@@ -1,10 +1,9 @@
 import '../core/supabase_client.dart';
 
 class GameService {
-  final _client = SupabaseClientManager.client;
+  Future<List<Map<String, dynamic>>> getGames() async {
+    final response = await supabase.from('games').select();
 
-  Future<List<dynamic>> getGames() async {
-    final data = await _client.from('games').select();
-    return data;
+    return List<Map<String, dynamic>>.from(response);
   }
 }

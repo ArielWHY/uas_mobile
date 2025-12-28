@@ -17,13 +17,21 @@ class GameDetailPage extends StatefulWidget {
 }
 
 class _GameDetailPageState extends State<GameDetailPage> {
-  final userIdController = TextEditingController();
-  final packageService = PackageService();
+  final TextEditingController userIdController = TextEditingController();
+  final PackageService packageService = PackageService();
+
+  @override
+  void dispose() {
+    userIdController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.gameName)),
+      appBar: AppBar(
+        title: Text(widget.gameName),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -31,34 +39,63 @@ class _GameDetailPageState extends State<GameDetailPage> {
           children: [
             TextField(
               controller: userIdController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'User ID Game',
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 20),
-            Text('Pilih Paket', style: TextStyle(fontSize: 16)),
+
+            const Text(
+              'Pilih Paket',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 10),
+
             Expanded(
-              child: FutureBuilder(
+              child: FutureBuilder<List<dynamic>>(
                 future: packageService.getPackagesByGame(widget.gameId),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
 
-                  final packages = snapshot.data as List;
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(
+                      child: Text('Paket tidak tersedia'),
+                    );
+                  }
+
+                  final packages = snapshot.data!;
 
                   return ListView.builder(
                     itemCount: packages.length,
                     itemBuilder: (context, index) {
                       final pkg = packages[index];
+
                       return Card(
                         child: ListTile(
                           title: Text(pkg['name']),
                           subtitle: Text('Rp ${pkg['price']}'),
-                          trailing: Icon(Icons.arrow_forward),
+                          trailing: const Icon(Icons.arrow_forward),
                           onTap: () {
+                            if (userIdController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('User ID Game wajib diisi'),
+                                ),
+                              );
+                              return;
+                            }
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -78,7 +115,7 @@ class _GameDetailPageState extends State<GameDetailPage> {
                   );
                 },
               ),
-            )
+            ),
           ],
         ),
       ),

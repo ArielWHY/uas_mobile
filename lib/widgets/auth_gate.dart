@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'pages/auth/login_page.dart';
-import 'pages/home/home_page.dart';
+import '../pages/auth/login_page.dart';
+import '../pages/home/home_page.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
@@ -14,11 +14,11 @@ class AuthGate extends StatelessWidget {
       builder: (context, snapshot) {
         final session = Supabase.instance.client.auth.currentSession;
 
-        if (session != null) {
-          return const HomePage();
+        if (session == null) {
+          return const LoginPage();
         }
 
-        return const LoginPage();
+        return const HomePage();
       },
     );
   }

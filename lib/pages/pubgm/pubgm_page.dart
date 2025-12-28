@@ -1,35 +1,31 @@
 import 'package:flutter/material.dart';
-import '../transaction/ml_transaction_page.dart';
+import '../transaction/pubgm_transaction_page.dart';
 
-class MobileLegendsPage extends StatelessWidget {
-  const MobileLegendsPage({super.key});
+class PubGMPage extends StatelessWidget {
+  const PubGMPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mobile Legends Diamond'),
-      ),
+      appBar: AppBar(title: const Text('PUBG Mobile UC')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: const [
-          MLDiamondTile(nominal: '86 Diamond', price: 'Rp 20.000'),
-          MLDiamondTile(nominal: '172 Diamond', price: 'Rp 40.000'),
-          MLDiamondTile(nominal: '257 Diamond', price: 'Rp 60.000'),
-          MLDiamondTile(nominal: '344 Diamond', price: 'Rp 80.000'),
-          MLDiamondTile(nominal: '514 Diamond', price: 'Rp 120.000'),
+          _PUBGTile(nominal: '60 UC', price: 'Rp 15.000'),
+          _PUBGTile(nominal: '325 UC', price: 'Rp 75.000'),
+          _PUBGTile(nominal: '660 UC', price: 'Rp 150.000'),
+          _PUBGTile(nominal: '1800 UC', price: 'Rp 375.000'),
         ],
       ),
     );
   }
 }
 
-class MLDiamondTile extends StatelessWidget {
+class _PUBGTile extends StatelessWidget {
   final String nominal;
   final String price;
 
-  const MLDiamondTile({
-    super.key,
+  const _PUBGTile({
     required this.nominal,
     required this.price,
   });
@@ -39,14 +35,14 @@ class MLDiamondTile extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: ListTile(
-        title: Text(nominal),
+        title: Text(nominal, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(price),
         trailing: const Icon(Icons.arrow_forward_ios),
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => MLTransactionPage(
+              builder: (_) => PubGMTransactionPage(
                 nominal: nominal,
                 price: price,
               ),
